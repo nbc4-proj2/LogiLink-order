@@ -1,0 +1,45 @@
+
+networks:
+  order-product-network: {}
+
+services:
+  order-postgres:
+    image: postgres:17
+    container_name: order-postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    command: [ "postgres", "-c", "port=${POSTGRES_PORT}" ]
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"   # 5435:5435
+    volumes:
+      - order_pgdata:/var/lib/postgresql/data
+    networks:
+      - order-product-network
+
+  order-service:
+    container_name: order-service
+    build: .
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+      # spring.datasource.* 속성 환경변수로 주입
+      SPRING_DATASOURCE_URL: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+
+    depends_on:
+      - order-postgres
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    networks:
+      - order-product-network
+
+volumes:
+  order_pgdata: {}

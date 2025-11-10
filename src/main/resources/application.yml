@@ -1,0 +1,24 @@
+spring:
+  config:
+    import: optional:file:./.env[.properties]
+  application:
+    name: order-service
+
+  datasource:
+    url: jdbc:postgresql://order-postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+    username: ${POSTGRES_USERNAME:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    defer-datasource-initialization: true
+    properties:
+      hibernate.format_sql: true
+      hibernate.use_sql_comments: true
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: ${SERVER_PORT:19095}
