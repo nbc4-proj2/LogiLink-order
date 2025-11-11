@@ -25,10 +25,10 @@ public class OrderController {
     @PostMapping
     public BaseResponse<OrderRes> createOrder(
             @RequestBody @Valid OrderCreateReq requestDto,
-            @RequestHeader(value = "USER_ID") Long userId,
-            @RequestHeader(value = "USER_ROLE") String userRole,
-            @RequestHeader(value = "COMPANY_ID") UUID companyId,
-            @RequestHeader(value = "HUB_ID") UUID hubId){
+            @RequestHeader(value = "X-User-Id") Long userId,
+            @RequestHeader(value = "X-User-Role") String userRole,
+            @RequestHeader(value = "X-Company-Id") UUID companyId,
+            @RequestHeader(value = "X-Hub-Id") UUID hubId){
         OrderRes responseDto = orderService.createOrder(requestDto, userId, userRole, companyId, hubId);
         return BaseResponse.success(responseDto);
     }
@@ -38,10 +38,10 @@ public class OrderController {
     public BaseResponse<OrderRes> upadateOrder(
             @PathVariable UUID orderId,
             @RequestBody @Valid OrderUpdateReq requestDto,
-            @RequestHeader(value = "USER_ID") Long userId,
-            @RequestHeader(value = "USER_ROLE") String userRole,
-            @RequestHeader(value = "COMPANY_ID") UUID companyId,
-            @RequestHeader(value = "HUB_ID") UUID hubId){
+            @RequestHeader(value = "X-User-Id") Long userId,
+            @RequestHeader(value = "X-User-Role") String userRole,
+            @RequestHeader(value = "X-Company-Id") UUID companyId,
+            @RequestHeader(value = "X-Hub-Id") UUID hubId){
         OrderRes responseDto = orderService.updateOrder(orderId, requestDto, userId, userRole, companyId, hubId);
         return BaseResponse.success(responseDto);
     }
@@ -50,10 +50,10 @@ public class OrderController {
     @DeleteMapping("/{orderId}")
     public BaseResponse<Void> deleteOrder(
             @PathVariable UUID orderId,
-            @RequestHeader(value = "USER_ID") Long userId,
-            @RequestHeader(value = "USER_ROLE") String userRole,
-            @RequestHeader(value = "COMPANY_ID") UUID companyId,
-            @RequestHeader(value = "HUB_ID") UUID hubId){
+            @RequestHeader(value = "X-User-Id") Long userId,
+            @RequestHeader(value = "X-User-Role") String userRole,
+            @RequestHeader(value = "X-Company-Id") UUID companyId,
+            @RequestHeader(value = "X-Hub-Id") UUID hubId){
         orderService.deleteOrder(orderId, userId, userRole, companyId, hubId);
         return BaseResponse.success(null);
     }
@@ -62,10 +62,10 @@ public class OrderController {
     @GetMapping("/{orderId}")
     public BaseResponse<OrderRes> getOrder(
             @PathVariable UUID orderId,
-            @RequestHeader(value = "USER_ID") Long userId,
-            @RequestHeader(value = "USER_ROLE") String userRole,
-            @RequestHeader(value = "COMPANY_ID") UUID companyId,
-            @RequestHeader(value = "HUB_ID") UUID hubId){
+            @RequestHeader(value = "X-User-Id") Long userId,
+            @RequestHeader(value = "X-User-Role") String userRole,
+            @RequestHeader(value = "X-Company-Id") UUID companyId,
+            @RequestHeader(value = "X-Hub-Id") UUID hubId){
         return BaseResponse.success(orderService.getOrder(orderId, userId, userRole, companyId, hubId));
     }
 
@@ -73,10 +73,10 @@ public class OrderController {
     @GetMapping
     public BaseResponse<Page<OrderRes>> getOrderPage(
             Pageable pageable,
-            @RequestHeader(value = "USER_ID") Long userId,
-            @RequestHeader(value = "USER_ROLE") String userRole,
-            @RequestHeader(value = "COMPANY_ID") UUID companyId,
-            @RequestHeader(value = "HUB_ID") UUID hubId){
+            @RequestHeader(value = "X-User-Id") Long userId,
+            @RequestHeader(value = "X-User-Role") String userRole,
+            @RequestHeader(value = "X-Company-Id") UUID companyId,
+            @RequestHeader(value = "X-Hub-Id") UUID hubId){
         Pageable p = PageableUtils.enforce(pageable);
         Page<OrderRes> result = orderService.getOrderPage(p, userId, userRole, companyId, hubId);
         return BaseResponse.success(result);
@@ -96,10 +96,10 @@ public class OrderController {
     @PatchMapping("/{orderId}/accept")
     public BaseResponse<OrderRes> acceptOrder(
             @PathVariable UUID orderId,
-            @RequestHeader("USER_ID") Long userId,
-            @RequestHeader("USER_ROLE") String userRole,
-            @RequestHeader(value = "COMPANY_ID") UUID companyId,
-            @RequestHeader(value = "HUB_ID") UUID hubId){
+            @RequestHeader("X-User-Id") Long userId,
+            @RequestHeader("X-User-Role") String userRole,
+            @RequestHeader(value = "X-Company-Id") UUID companyId,
+            @RequestHeader(value = "X-Hub-Id") UUID hubId){
         OrderRes responseDto = orderService.acceptOrder(orderId, userId, userRole, companyId, hubId);
         return BaseResponse.success(responseDto);
     }
