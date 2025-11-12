@@ -23,6 +23,15 @@ spring:
 server:
   port: ${SERVER_PORT:19095}
 
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:19090/eureka/
+  instance:
+    hostname: order-service
+
 feign:
   client:
     config:
