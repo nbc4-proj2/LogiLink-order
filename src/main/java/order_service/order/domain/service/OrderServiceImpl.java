@@ -87,7 +87,7 @@ public class OrderServiceImpl implements OrderService{
     @Transactional
     public OrderRes acceptOrder(UUID orderId, Long userId, String userRole, UUID companyId, UUID hubId) {
 
-        Order order = orderRepository.findActiveOrder(orderId)
+        Order order = orderRepository.findByOrderIdAndStatus(orderId, EntityStatus.ACTIVE)
                 .orElseThrow(() -> new AppException(OrderErrorCode.ORDER_NOT_FOUND));
 
         // 권한 검증
@@ -131,7 +131,7 @@ public class OrderServiceImpl implements OrderService{
     @Transactional
     public OrderRes updateOrder(UUID orderId, OrderUpdateReq requestDto, Long userId, String userRole, UUID companyId, UUID hubId) {
 
-        Order order = orderRepository.findActiveOrder(orderId)
+        Order order = orderRepository.findByOrderIdAndStatus(orderId, EntityStatus.ACTIVE)
                 .orElseThrow(() -> new AppException(OrderErrorCode.ORDER_NOT_FOUND));
 
         // 권한 검증
@@ -175,7 +175,7 @@ public class OrderServiceImpl implements OrderService{
     @Transactional
     public void deleteOrder(UUID orderId, Long userId, String userRole, UUID companyId, UUID hubId){
 
-        Order order = orderRepository.findActiveOrder(orderId)
+        Order order = orderRepository.findByOrderIdAndStatus(orderId, EntityStatus.ACTIVE)
                 .orElseThrow(() -> new AppException(OrderErrorCode.ORDER_NOT_FOUND));
 
         // 권한 설정
@@ -193,7 +193,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     @Transactional(readOnly = true)
     public OrderRes getOrder(UUID orderId, Long userId, String userRole, UUID companyId, UUID hubId) {
-        Order order = orderRepository.findActiveOrder(orderId)
+        Order order = orderRepository.findByOrderIdAndStatus(orderId, EntityStatus.ACTIVE)
                 .orElseThrow(() -> new AppException(OrderErrorCode.ORDER_NOT_FOUND));
         validationReadPermission(order, userRole, companyId, hubId);
         return OrderRes.from(order);
