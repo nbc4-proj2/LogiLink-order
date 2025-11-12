@@ -28,7 +28,7 @@ public class OrderController {
             @RequestHeader(value = "X-User-Id") Long userId,
             @RequestHeader(value = "X-User-Role") String userRole,
             @RequestHeader(value = "X-Company-Id") UUID companyId,
-            @RequestHeader(value = "X-Hub-Id") UUID hubId){
+            @RequestHeader(value = "X-Hub-Id") UUID hubId) {
         OrderRes responseDto = orderService.createOrder(requestDto, userId, userRole, companyId, hubId);
         return BaseResponse.success(responseDto);
     }
@@ -41,7 +41,7 @@ public class OrderController {
             @RequestHeader(value = "X-User-Id") Long userId,
             @RequestHeader(value = "X-User-Role") String userRole,
             @RequestHeader(value = "X-Company-Id") UUID companyId,
-            @RequestHeader(value = "X-Hub-Id") UUID hubId){
+            @RequestHeader(value = "X-Hub-Id") UUID hubId) {
         OrderRes responseDto = orderService.updateOrder(orderId, requestDto, userId, userRole, companyId, hubId);
         return BaseResponse.success(responseDto);
     }
@@ -53,7 +53,7 @@ public class OrderController {
             @RequestHeader(value = "X-User-Id") Long userId,
             @RequestHeader(value = "X-User-Role") String userRole,
             @RequestHeader(value = "X-Company-Id") UUID companyId,
-            @RequestHeader(value = "X-Hub-Id") UUID hubId){
+            @RequestHeader(value = "X-Hub-Id") UUID hubId) {
         orderService.deleteOrder(orderId, userId, userRole, companyId, hubId);
         return BaseResponse.success(null);
     }
@@ -65,7 +65,7 @@ public class OrderController {
             @RequestHeader(value = "X-User-Id") Long userId,
             @RequestHeader(value = "X-User-Role") String userRole,
             @RequestHeader(value = "X-Company-Id") UUID companyId,
-            @RequestHeader(value = "X-Hub-Id") UUID hubId){
+            @RequestHeader(value = "X-Hub-Id") UUID hubId) {
         return BaseResponse.success(orderService.getOrder(orderId, userId, userRole, companyId, hubId));
     }
 
@@ -76,7 +76,7 @@ public class OrderController {
             @RequestHeader(value = "X-User-Id") Long userId,
             @RequestHeader(value = "X-User-Role") String userRole,
             @RequestHeader(value = "X-Company-Id") UUID companyId,
-            @RequestHeader(value = "X-Hub-Id") UUID hubId){
+            @RequestHeader(value = "X-Hub-Id") UUID hubId) {
         Pageable p = PageableUtils.enforce(pageable);
         Page<OrderRes> result = orderService.getOrderPage(p, userId, userRole, companyId, hubId);
         return BaseResponse.success(result);
@@ -99,20 +99,9 @@ public class OrderController {
             @RequestHeader("X-User-Id") Long userId,
             @RequestHeader("X-User-Role") String userRole,
             @RequestHeader(value = "X-Company-Id") UUID companyId,
-            @RequestHeader(value = "X-Hub-Id") UUID hubId){
+            @RequestHeader(value = "X-Hub-Id") UUID hubId) {
         OrderRes responseDto = orderService.acceptOrder(orderId, userId, userRole, companyId, hubId);
         return BaseResponse.success(responseDto);
     }
 
-//    // 주문 거절
-//    @PatchMapping("/{orderId}/reject")
-//    public BaseResponse<OrderRes> rejectOrder(
-//            @PathVariable UUID orderId,
-//            @RequestHeader("USER_ID") Long userId,
-//            @RequestHeader("USER_ROLE") String userRole,
-//            @RequestHeader(value = "COMPANY_ID") UUID companyId,
-//            @RequestHeader(value = "HUB_ID") UUID hubId){
-//        OrderRes responseDto = orderService.rejectOrder(orderId, userId, userRole, companyId, hubId);
-//        return BaseResponse.success(responseDto);
-//    }
 }

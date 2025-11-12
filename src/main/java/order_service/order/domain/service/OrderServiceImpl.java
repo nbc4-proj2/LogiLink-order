@@ -179,7 +179,7 @@ public class OrderServiceImpl implements OrderService{
                 .orElseThrow(() -> new AppException(OrderErrorCode.ORDER_NOT_FOUND));
 
         // 권한 설정
-        validationDeletePermission(order, userId, userRole, companyId, hubId);
+        validationDeletePermission(order, userRole, companyId, hubId);
 
         // 주문 상태 확인
         if("COMPANY_MANAGER".equals(userRole) && order.getOrderStatus() == OrderStatus.ORDER_SUCCEEDED){
@@ -195,7 +195,7 @@ public class OrderServiceImpl implements OrderService{
     public OrderRes getOrder(UUID orderId, Long userId, String userRole, UUID companyId, UUID hubId) {
         Order order = orderRepository.findActiveOrder(orderId)
                 .orElseThrow(() -> new AppException(OrderErrorCode.ORDER_NOT_FOUND));
-        validationReadPermission(order, userId, userRole, companyId, hubId);
+        validationReadPermission(order, userRole, companyId, hubId);
         return OrderRes.from(order);
     }
 
@@ -204,11 +204,11 @@ public class OrderServiceImpl implements OrderService{
     @Transactional(readOnly = true)
     public Page<OrderRes> getOrderPage(Pageable pageable, Long userId, String userRole, UUID companyId, UUID hubId) {
 
-        Page<Order> OrderPage = findOrderByRole(pageable, userId, userRole, companyId, hubId);
+        Page<Order> OrderPage = findOrderByRole(pageable, userRole, companyId, hubId);
         return OrderPage.map(OrderRes::from);
     }
 
-    private void validationDeletePermission(Order order, Long userId, String userRole, UUID companyId, UUID hubId) {
+    private void validationDeletePermission(Order order, String userRole, UUID companyId, UUID hubId) {
         switch(userRole){
             case "MASTER":
                 return;
@@ -229,7 +229,7 @@ public class OrderServiceImpl implements OrderService{
         }
     }
 
-    private void validationReadPermission(Order order, Long userId, String userRole, UUID companyId, UUID hubId) {
+    private void validationReadPermission(Order order, String userRole, UUID companyId, UUID hubId) {
         switch(userRole){
             case "MASTER":
                 return;
@@ -248,7 +248,7 @@ public class OrderServiceImpl implements OrderService{
         }
     }
 
-    private Page<Order> findOrderByRole(Pageable pageable, Long userId, String userRole, UUID companyId, UUID hubId) {
+    private Page<Order> findOrderByRole(Pageable pageable, String userRole, UUID companyId, UUID hubId) {
         switch(userRole){
             case "MASTER":
                 return orderRepository.findAllByStatus(EntityStatus.ACTIVE, pageable);
