@@ -28,9 +28,12 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:19090/eureka/
+      defaultZone: http://host.docker.internal:19090/eureka/
   instance:
-    hostname: order-service
+    hostname: localhost
+    non-secure-port: ${SERVER_PORT:19095}
+    prefer-ip-address: false
+    instance-id: ${spring.application.name}:${random.value}
 
 feign:
   client:
@@ -39,6 +42,6 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
 
-PRODUCT_SERVICE_URL: http://product-service:19094
+#PRODUCT_SERVICE_URL: http://product-service:19094
 
-DELIVERY_SERVICE_URL: http://delivery-service:19097
+#DELIVERY_SERVICE_URL: http://delivery-service:19097

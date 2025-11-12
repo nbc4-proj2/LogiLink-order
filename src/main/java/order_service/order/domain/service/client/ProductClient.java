@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
-@FeignClient(name = "product-service", url = "${PRODUCT_SERVICE_URL}")
+@FeignClient(name = "product-service")
 public interface ProductClient {
     //상품 조회 (주문 시 검증용)
     @GetMapping("/api/v1/products/{productId}")

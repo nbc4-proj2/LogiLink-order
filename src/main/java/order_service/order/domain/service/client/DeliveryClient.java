@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
 
-@FeignClient(name = "delivery-service", url = "${DELIVERY_SERVICE_URL}")
+@FeignClient(name = "delivery-service")
 public interface DeliveryClient {
 
     @PostMapping("/api/v1/deliveries")
