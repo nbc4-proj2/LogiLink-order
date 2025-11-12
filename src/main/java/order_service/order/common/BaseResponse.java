@@ -1,8 +1,8 @@
 package order_service.order.common;
 
 import lombok.*;
+import order_service.order.common.exception.AppException;
 import org.springframework.http.HttpStatus;
-import product_service.product.common.exception.AppException;
 
 @Getter
 @NoArgsConstructor

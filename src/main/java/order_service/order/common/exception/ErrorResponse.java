@@ -1,7 +1,6 @@
 package order_service.order.common.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import product_service.product.common.exception.AppException;
 
 import java.util.List;
 

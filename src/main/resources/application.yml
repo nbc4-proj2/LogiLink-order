@@ -22,3 +22,14 @@ spring:
 
 server:
   port: ${SERVER_PORT:19095}
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+
+PRODUCT_SERVICE_URL: http://product-service:19094
+
+DELIVERY_SERVICE_URL: http://delivery-service:19097
