@@ -29,6 +29,9 @@ public class Order extends BaseTimeEntity {
     private UUID productId;
 
     @Column(nullable = false)
+    private Long prdId;
+
+    @Column(nullable = false)
     private String productName;
 
     @Column(nullable = false)
@@ -62,11 +65,12 @@ public class Order extends BaseTimeEntity {
     @Column(nullable = false)
     private UUID companyId;
 
-    public static Order createOrder(Long userId, UUID companyId, String destinationAddress, UUID hubId, UUID productId,
+    public static Order createOrder(Long userId, UUID companyId, String destinationAddress, UUID hubId, UUID productId, Long prdId,
                                String productName, Long productPrice, Long productQuantity, String memo) {
         Order order = new Order();
         order.userId = userId;
         order.companyId = companyId;
+        order.prdId = prdId;
         order.destinationAddress = destinationAddress;
         order.hubId = hubId;
         order.productId = productId;
@@ -79,12 +83,13 @@ public class Order extends BaseTimeEntity {
         return order;
     }
 
-    public void updateOrder(UUID companyId, UUID hubId, UUID productId, String destinationAddress, String productName,
+    public void updateOrder(UUID companyId, String destinationAddress, UUID hubId, UUID productId, Long prdId, String productName,
                             Long productPrice, Long productQuantity, String memo){
         this.companyId = companyId;
         this.destinationAddress = destinationAddress;
         this.hubId = hubId;
         this.productId = productId;
+        this.prdId = prdId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productQuantity = productQuantity;
@@ -94,12 +99,14 @@ public class Order extends BaseTimeEntity {
     public static Order createRejected(
             Long userId,
             UUID companyId,
+            Long prdId,
             String destinationAddress,
             UUID hubId,
             UUID productId,
             String productName,
             Long productPrice,
-            Long productQuantity
+            Long productQuantity,
+            String memo
     ) {
         return Order.builder()
                 .userId(userId)
@@ -107,6 +114,7 @@ public class Order extends BaseTimeEntity {
                 .destinationAddress(destinationAddress)
                 .hubId(hubId)
                 .productId(productId)
+                .prdId(prdId)
                 .productName(productName)
                 .productPrice(productPrice)
                 .productQuantity(productQuantity)

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
 
-@FeignClient(name = "delivery-service")
+@FeignClient(name = "deliveryClient", url = "http://host.docker.internal:19091")
 public interface DeliveryClient {
 
     @PostMapping("/api/v1/deliveries")

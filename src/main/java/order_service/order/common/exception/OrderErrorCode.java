@@ -12,7 +12,9 @@ public enum OrderErrorCode implements ErrorCode{
     ORDER_DETAIL_NOT_FOUND("ORDER0004", "해당 주문 상세를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     SELF_ORDER_NOT_ALLOWED("ORDER0005", "본인 회사 상품은 주문이 불가합니다.", HttpStatus.BAD_REQUEST),
     UNAUTHORIZED_ACTION("ORDER0006", "주문에 대한 권한이 없습니다.", HttpStatus.UNAUTHORIZED ),
-    INSUFFICIENT_STOCK("ORDER0007","재고가 부족합니다.", HttpStatus.BAD_REQUEST);
+    INSUFFICIENT_STOCK("ORDER0007","재고가 부족합니다.", HttpStatus.BAD_REQUEST),
+    PRODUCT_INACTIVE("ORDER008","상품이 비활성상태입니다.", HttpStatus.BAD_REQUEST ),
+    INVALID_PRODUCT_NAME("ORDER009", "해당 상품이 존재하지 않습니다. " ,HttpStatus.BAD_REQUEST );
 
 
 

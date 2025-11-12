@@ -17,6 +17,7 @@ public class OrderRes {
     private UUID companyId;
     private String destinationAddress;
     private UUID productId;
+    private Long prdId;
     private OrderStatus orderStatus;
     private UUID hubId;
     private String productName;
@@ -34,14 +35,15 @@ public class OrderRes {
                 .userId(order.getUserId())
                 .companyId(order.getCompanyId())
                 .destinationAddress(order.getDestinationAddress())
-                .hubId(order.getHubId())
                 .productId(order.getProductId())
+                .prdId(order.getPrdId())
+                .orderStatus(order.getOrderStatus())
+                .hubId(order.getHubId())
                 .productName(order.getProductName())
                 .productPrice(order.getProductPrice())
                 .productQuantity(order.getProductQuantity())
                 .totalPrice(order.getTotalPrice())
                 .memo(order.getMemo())
-                .orderStatus(order.getOrderStatus())
                 .status(order.getStatus())
                 .createdAt(order.getCreatedAt())
                 .updateAt(order.getUpdatedAt())
