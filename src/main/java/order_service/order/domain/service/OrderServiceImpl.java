@@ -122,11 +122,12 @@ public class OrderServiceImpl implements OrderService{
 
             // 배송 생성(delivery-service 호출)
             deliveryClient.createDelivery(
+                    order.getOrderId(),
+                    userRole,
                     DeliveryClient.DeliveryCreateRequest.builder()
                             .originHubId(order.getHubId())
                             .destinationId(order.getCompanyId())
                             .destinationAddress(order.getDestinationAddress())
-                            .orderId(order.getOrderId())
                             .build()
             );
             return OrderRes.from(order);
