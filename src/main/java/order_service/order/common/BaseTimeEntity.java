@@ -30,6 +30,7 @@ public abstract class BaseTimeEntity {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @Column
     private LocalDateTime deletedAt;
 
     @CreatedBy
@@ -37,7 +38,9 @@ public abstract class BaseTimeEntity {
     private Long createdBy;
 
     @LastModifiedBy
+    @Column
     private Long updatedBy;
 
+    @Column
     private Long deletedBy;
 }

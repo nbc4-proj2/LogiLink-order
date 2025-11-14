@@ -40,26 +40,37 @@ public class OrderServiceImpl implements OrderService{
         }
 
         // 상품 정보 조회(product-service 호출)
-        ProductRes product = productClient.getProduct(requestDto.getProductId());
-        if (product == null || !"ACTIVE".equals(product.getStatus())) {
+        ProductRes product = productClient.getProduct(requestDto.getPrdId()).getResult();
+        if (product == null) {
             throw new AppException(OrderErrorCode.PRODUCT_NOT_FOUND);
         }
-        // 회사 검증(company_manager는 본인 회사 상품 주문은 할 수 없음)
-        if (product.getCompanyId().equals(companyId)) {
-            throw new AppException(OrderErrorCode.SELF_ORDER_NOT_ALLOWED);
+        if (!"ACTIVE".equalsIgnoreCase(product.getStatus())) {
+            throw new AppException(OrderErrorCode.PRODUCT_INACTIVE);
         }
+
+        // 상품명 일치 검증
+        if (!product.getProductName().equals(requestDto.getProductName())) {
+            throw new AppException(OrderErrorCode.INVALID_PRODUCT_NAME);
+        }
+
+//        // 회사 검증(company_manager는 본인 회사 상품 주문은 할 수 없음)
+//        if (product.getCompanyId().equals(companyId)) {
+//            throw new AppException(OrderErrorCode.SELF_ORDER_NOT_ALLOWED);
+//        }
         // 재고 확인(참고용 체크)
         if (product.getProductQuantity() < requestDto.getProductQuantity()) {
             // 재고 부족 시 주문 거절 상태로 저장
             Order rejectedOrder = Order.createRejected(
                     userId,
                     companyId,
+                    product.getPrdId(),
                     requestDto.getDestinationAddress(),
-                    hubId,
+                    product.getHubId(),
                     product.getProductId(),
                     product.getProductName(),
                     product.getProductPrice(),
-                    product.getProductQuantity()
+                    requestDto.getProductQuantity(),
+                    requestDto.getMemo()
             );
             orderRepository.save(rejectedOrder);
             return OrderRes.from(rejectedOrder);
@@ -72,6 +83,7 @@ public class OrderServiceImpl implements OrderService{
                 requestDto.getDestinationAddress(),
                 product.getHubId(),
                 product.getProductId(),
+                product.getPrdId(),
                 product.getProductName(),
                 product.getProductPrice(),
                 requestDto.getProductQuantity(),
@@ -110,11 +122,12 @@ public class OrderServiceImpl implements OrderService{
 
             // 배송 생성(delivery-service 호출)
             deliveryClient.createDelivery(
+                    order.getOrderId(),
+                    userRole,
                     DeliveryClient.DeliveryCreateRequest.builder()
                             .originHubId(order.getHubId())
                             .destinationId(order.getCompanyId())
                             .destinationAddress(order.getDestinationAddress())
-                            .orderId(order.getOrderId())
                             .build()
             );
             return OrderRes.from(order);
@@ -145,9 +158,14 @@ public class OrderServiceImpl implements OrderService{
         }
 
         // 상품 재조회
-        ProductRes product = productClient.getProduct(requestDto.getProductId());
+        ProductRes product = productClient.getProduct(requestDto.getPrdId()).getResult();
         if (product == null || !"ACTIVE".equals(product.getStatus())) {
             throw new AppException(OrderErrorCode.PRODUCT_NOT_FOUND);
+        }
+
+        // 상품명 검증
+        if (!product.getProductName().equals(requestDto.getProductName())) {
+            throw new AppException(OrderErrorCode.INVALID_PRODUCT_NAME);
         }
 
         // 재고 확인
@@ -158,12 +176,13 @@ public class OrderServiceImpl implements OrderService{
         // 주문 수정
         order.updateOrder(
                 companyId,
-                hubId,
-                product.getProductId(),
-                product.getProductName(),
                 requestDto.getDestinationAddress(),
+                product.getHubId(),
+                product.getProductId(),
+                requestDto.getPrdId(),
+                product.getProductName(),
                 product.getProductPrice(),
-                product.getProductQuantity(),
+                requestDto.getProductQuantity(),
                 requestDto.getMemo()
         );
 

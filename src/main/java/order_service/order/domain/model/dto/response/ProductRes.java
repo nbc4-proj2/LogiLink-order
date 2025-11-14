@@ -7,6 +7,7 @@ import java.util.UUID;
 @Getter
 public class ProductRes {
     private UUID productId;
+    private Long prdId;
     private String productName;
     private String productDescription;
     private Long productPrice;
